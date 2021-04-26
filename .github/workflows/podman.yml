@@ -33,6 +33,7 @@ jobs:
         continue-on-error: true
         run: |
           podman run -d --rm --name instance quay.io/actatux/ansible-centos:8
+          podman info > /tmp/podman_info.out
           podman exec instance systemctl list-units
           podman exec instance systemctl status
 
@@ -45,4 +46,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: sos-report
-          path: /tmp/sosreport-*
+          path: |
+            /tmp/sosreport-*
+            /tmp/podman_*
