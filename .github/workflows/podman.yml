@@ -39,6 +39,7 @@ jobs:
       - name: Collect sos report
         run: |
           sudo sos report --batch
+          sudo chmod 644 /tmp/sosreport-*
 
       - name: Archive sos report results
         uses: actions/upload-artifact@v2
