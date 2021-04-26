@@ -31,6 +31,7 @@ jobs:
           EOF
 
       - name: Run podman
+        continue-on-error: true
         run: |
           podman run -d --rm --name instance quay.io/actatux/ansible-centos:8
           podman exec instance systemctl list-units
