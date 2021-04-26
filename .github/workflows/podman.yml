@@ -10,6 +10,8 @@ jobs:
   podman:
     name: podman
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
 
     steps:
       - name: Workaround for rootless podman  # workaround actions/virtual-environments/issues/3229
