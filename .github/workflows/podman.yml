@@ -1,0 +1,44 @@
+---
+name: Repro podman
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  podman:
+    name: podman
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Workaround for rootless podman  # workaround actions/virtual-environments/issues/3229
+        run: |
+          mkdir -vp ~/.config/containers
+          cat > ~/.config/containers/storage.conf << EOF
+
+          [storage]
+          driver = "overlay"
+          graphroot = "/home/runner/.local/share/containers/storage"
+
+          [storage.options]
+          mount_program = "/usr/bin/fuse-overlayfs"
+          additionalimagestores = []
+
+          EOF
+
+      - name: Run podman
+        run: |
+          podman run -d --rm --name instance quay.io/actatux/ansible-centos:8
+          podman exec instance systemctl list-units
+          podman exec instance systemctl status
+
+      - name: Collect sos report
+        run: |
+          sudo sos report --batch
+
+      - name: Archive sos report results
+        uses: actions/upload-artifact@v2
+        with:
+          name: sos-report
+          path: /tmp/sosreport-*
