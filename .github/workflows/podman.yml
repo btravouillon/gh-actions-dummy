@@ -32,7 +32,7 @@ jobs:
       - name: Run podman
         continue-on-error: true
         env:
-          XDG_RUNTIME_DIR=/run/user/1001
+          XDG_RUNTIME_DIR: /run/user/1001
         run: |
           env
           podman run -d --rm --privileged --name instance quay.io/actatux/ansible-centos:8
