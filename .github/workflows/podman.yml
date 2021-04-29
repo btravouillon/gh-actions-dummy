@@ -34,7 +34,8 @@ jobs:
         env:
           XDG_RUNTIME_DIR: /run/user/1001
         run: |
-          env
+          echo $XDG_RUNTIME_DIR
+          ls -l $XDG_RUNTIME_DIR
           podman run -d --rm --privileged --name instance quay.io/actatux/ansible-centos:8
           podman info > /tmp/podman_info.out
           podman exec instance systemctl list-units
