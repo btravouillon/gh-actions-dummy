@@ -31,7 +31,10 @@ jobs:
 
       - name: Run podman
         continue-on-error: true
+        env:
+          XDG_RUNTIME_DIR=/run/user/$(id -u)
         run: |
+          env
           podman run -d --rm --privileged --name instance quay.io/actatux/ansible-centos:8
           podman info > /tmp/podman_info.out
           podman exec instance systemctl list-units
